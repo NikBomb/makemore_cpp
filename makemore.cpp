@@ -8,14 +8,15 @@
 #include <numeric>
 #include <iostream>
 #include <random>
+#include <string_view>
 
-const uint16_t n_size = 2;
+const uint16_t n_size = 4;
 
 int main(){
 
     
     std::vector<std::string> names;
-    std::ifstream database{"names.txt"};
+    std::ifstream database{"artists_dbase.txt"};
     std::set<char> alphabet;
 
     /*Read database*/
@@ -36,29 +37,31 @@ int main(){
 
     /*Create n_grams*/
 
+
     std::map<std::string, uint64_t> n_grams;
+    const std::string start_stop = std::string(n_size - 1, '/');
     for(auto& name : names){
-        name = std::string(n_size - 1, '.') + name + std::string(n_size - 1, '.'); 
+        name = start_stop + name + start_stop; 
         for (size_t i = 0; i <= name.size() - n_size; ++i) {   
             auto result = n_grams.find(name.substr(i, n_size));
             if(result == n_grams.end()){
                 n_grams.insert(std::make_pair(name.substr(i, n_size), 1));
             } else {
-                (*result).second += 1;
+                result->second += 1;
             }
         }
     }
 
     /*Create Name*/
 
-    auto name = std::string(n_size - 1, '.');
+    auto name = std::string(n_size - 1, '/');
     std::vector<double> probs;
     std::unordered_map<uint64_t, std::string> mapPos;
     std::random_device rd;
     std::mt19937 gen(rd());
 
     size_t win_start = -1;
-    while (name[name.size() - 1] != '.' || win_start == -1){
+    while (name[name.size() - 1] != '/' || win_start == -1){
         win_start++;
         auto window = name.substr(win_start, n_size - 1);
        
