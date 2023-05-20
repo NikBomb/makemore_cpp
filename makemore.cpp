@@ -2,8 +2,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <unordered_map>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <numeric>
 #include <iostream>
@@ -32,7 +32,7 @@ int main(){
         }
     }
 
-    alphabet.insert('.');
+    alphabet.insert('/');
 
     /*Create n_grams*/
 
@@ -44,7 +44,8 @@ int main(){
         for (size_t i = 0; i <= name.size() - n_size; ++i) {   
             auto result = n_grams.find(name.substr(i, n_size));
             if(result == n_grams.end()){
-                n_grams.insert(std::make_pair(name.substr(i, n_size), 1));
+                n_grams.insert(
+                  std::make_pair(name.substr(i, n_size), 1));
             } else {
                 result->second += 1;
             }
@@ -72,7 +73,8 @@ int main(){
                 probs.push_back(freq->second);
             }
         }
-        std::discrete_distribution<size_t> distribution(probs.begin(), probs.end());
+        std::discrete_distribution<size_t> distribution(probs.begin(), 
+                                                        probs.end());
         auto n = distribution(gen);
         name = name + mapPos[n];
         mapPos.clear();
