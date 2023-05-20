@@ -8,9 +8,8 @@
 #include <numeric>
 #include <iostream>
 #include <random>
-#include <string_view>
 
-const uint16_t n_size = 4;
+const uint16_t n_size = 3;
 
 int main(){
 
